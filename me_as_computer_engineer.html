@@ -9,10 +9,16 @@
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             display: flex;
-            justify-content: space-around;
+            flex-direction: column;
             align-items: center;
             height: 100vh;
             margin: 0;
+            padding: 20px;
+        }
+        .photo-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
         }
         .photo {
             border: 5px solid #555;
@@ -20,7 +26,6 @@
             width: 100%;
             height: auto;
             transition: transform 0.3s;
-            display: inline-block;
         }
         .photo:hover {
             transform: scale(1.05);
@@ -29,6 +34,7 @@
             border-color: #000000;
             width: 30%;
             text-align: center;
+            margin: 10px;
         }
         p {
             margin: 0;
@@ -36,20 +42,46 @@
             font-size: 14px;
             color: #000;
         }
+        .button {
+            display: inline-block;
+            background-color: #ff954e;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            margin: 10px auto;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .button:hover {
+            background-color: #e68339;
+            transform: scale(1.05);
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
-    <div class="photo1">
-        <img src="public/com_eng_sky_scrape.jpg" alt="Photo 1" class="photo">
-        <p>My office</p>
+    <div class="photo-container">
+        <div class="photo1">
+            <img src="public/com_eng_sky_scrape.jpg" alt="Photo 1" class="photo">
+            <p>My office</p>
+        </div>
+        <div class="photo2">
+            <img src="public/office.jpg" alt="Photo 2" class="photo">
+            <p>Office environment</p>
+        </div>
+        <div class="photo3">
+            <img src="public/pixlr-image-generator-e5a9a0c7-0b04-44bb-8e4c-665e3b0f3bf5.png" alt="Photo 3" class="photo">
+            <p>Snack and Drink zone</p>
+        </div>
     </div>
-    <div class="photo2">
-        <img src="public/office.jpg" alt="Photo 2" class="photo">
-        <p>Office environment</p>
-    </div>
-    <div class="photo3">
-        <img src="public/pixlr-image-generator-e5a9a0c7-0b04-44bb-8e4c-665e3b0f3bf5.png" alt="Photo 3" class="photo">
-        <p>Snack and Drink zone</p>
+    <div class="button-container">
+        <a href="my_kmutnb.html" class="button">My KMUTNB</a><br>
+        <a href="index.html" class="button">Profile</a>
     </div>
 </body>
 </html>

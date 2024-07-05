@@ -1,9 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>My Kmutnb</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My KMUTNB</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .photo1, .photo2, .mp4 {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 800px;
+            text-align: center;
+        }
+        .photo1 img, .photo2 img, .mp4 video {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        p {
+            font-size: 16px;
+            color: #555;
+            text-align: left;
+        }
+        .button {
+            display: inline-block;
+            background-color: #ff954e; /* Green */
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            margin: 10px auto;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .button:hover {
+            background-color: #ff954e;
+            transform: scale(1.05);
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Hello World.</h1>
+    <h1>Place that impress me!</h1>
+    <div class="photo1">
+        <img src="public/lab_cir.jpg" alt="photo1" class="photo">
+        <p>My first place is circuit laboratory. I had a great time learning this subject and enjoyed experimenting with different electrical circuits. So that's why this place impresses me so much.</p>
+    </div>
+    <div class="photo2">
+        <img src="public/kmutnb_lib.jpg" alt="photo2" class="photo">
+        <p>The second place that impresses me is the KMUTNB library. I spend a lot of time studying here because I feel very focused when I read books or review the things I've learned.</p>
+    </div>
+    <div class="mp4">
+        <video width="100%" height="auto" controls="controls">
+            <source src="public/cpre_ball.mp4" type="video/mp4">
+        </video>
+        <p>The third place I love is the soccer field. I have a lot of fun here because I can play soccer with my friends and feel relaxed after studying hard.</p>
+    </div>
+    <div class="button-container">
+        <a href="me_as_computer_engineer.html" class="button">Me as Computer Engineering</a><br>
+        <a href="index.html" class="button">Profile</a>
+    </div>
 </body>
 </html>
