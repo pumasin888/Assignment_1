@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment 3 Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #d6d6ff;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff6f6;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        h3 {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        h4, h5 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+
+        pre {
+            background-color: #f4f4f9;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            overflow-x: auto;
+        }
+
+        code {
+            background-color: #f4f4f9;
+            color: #d63384;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        video {
+            display: block;
+            margin: 20px auto;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .task {
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Assignments: 2024-08-06</h1>
+        
+        <div class="task">
+            <h2>Communication with a Public MQTT Broker</h2>
+            <img src="./public/arduino_mqtt.png" alt="Arduino MQTT">
+            
+            <h4>2.1 Write an Arduino sketch for ESP32/ESP32C3 that communicates with a public MQTT broker on port 1883. The sketch should publish and subscribe to messages on a specific topic at regular intervals (e.g., every 10 seconds).</h4>
+            
+            <div>
+                <h5>Arduino Sketch</h5>
+                <pre><code>
+#include &lt;WiFi.h&gt;
+#include &lt;PubSubClient.h&gt;
+
+// Replace these with your network credentials
+const char* ssid = "best2U";
+const char* password = "aj2013120";
+
+// Public MQTT broker details
+const char* mqtt_server = "broker.hivemq.com";
+const int mqtt_port = 1883;
+const char* mqtt_topic = "esp32/test/cpre888";
+
+WiFiClient espClient;
+PubSubClient client(espClient);
+long lastMsg = 0;
+char msg[50];
+int count = 0;
+
+void setup_wifi() {
+    delay(10);
+    Serial.println();
+    Serial.print("Connecting to ");
+    Serial.println(ssid);
+    WiFi.begin(ssid, password);
+
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        Serial.print(".");
+    }
+
+    Serial.println("");
+    Serial.println("WiFi connected");
+    Serial.println("IP address: ");
+    Serial.println(WiFi.localIP());
+}
+
+void callback(char* topic, byte* payload, unsigned int length) {
+    Serial.print("Message arrived on topic: ");
+    Serial.print(topic);
+    Serial.print(". Message: ");
+    String message;
+    for (int i = 0; i < length; i++) {
+        message += (char)payload[i];
+    }
+    Serial.println(message);
+}
+
+void reconnect() {
+    while (!client.connected()) {
+        Serial.print("Attempting MQTT connection...");
+        if (client.connect("ESP32Client_cpre888")) {  
+            Serial.println("connected");
+            client.subscribe(mqtt_topic);  
+        } else {
+            Serial.print("failed, rc=");
+            Serial.print(client.state());
+            Serial.println(" try again in 5 seconds");
+            delay(5000);
+        }
+    }
+}
+
+void setup() {
+    Serial.begin(115200);
+    setup_wifi();
+    client.setServer(mqtt_server, mqtt_port);
+    client.setCallback(callback);
+}
+
+void loop() {
+    if (!client.connected()) {
+        reconnect();
+    }
+    client.loop();
+
+    long now = millis();
+    if (now - lastMsg > 10000) {
+        lastMsg = now;
+        ++count;
+        snprintf(msg, 50, "Hello from ESP32! Count: %d", count);
+        Serial.print("Publishing message: ");
+        Serial.println(msg);
+        client.publish(mqtt_topic, msg);
+    }
+}
+                </code></pre>
+                <p>
+                    This code connects to a WiFi network and communicates with the MQTT broker using the topic "esp32/test/cpre888". The ESP32 publishes a message ("Hello from ESP32!") every 10 seconds, appending a count to the message.
+                </p>
+            </div>
+
+            <div>
+                <h5>Visualizing the Result</h5>
+                <img src="./public/arduino_mqtt_output.png" alt="Arduino MQTT Output">
+                <p>
+                    Subscribe to the topic "esp32/test/cpre888" using an MQTT client to view the published messages. You should see messages like "Hello from ESP32! Count: xxx".
+                </p>
+            </div>
+
+            <div>
+                <h5>Using WSL Ubuntu</h5>
+                <img src="./public/wsl_mqtt.png" alt="WSL MQTT">
+                <p>
+                    You can also publish messages using the WSL CLI by running:
+                    <code>mosquitto_pub -h broker.hivemq.com -t esp32/test/cpre888 -m "Hello from WSL"</code>. To subscribe, run: <code>mosquitto_sub -h broker.hivemq.com -t esp32/test/cpre888</code>.
+                </p>
+                <img src="./public/wsl_mqtt_output.png" alt="WSL MQTT Output">
+            </div>
+
+            <div>
+                <h5>Using MQTT Explorer</h5>
+                <img src="./public/sub_mqtt_explorer.png" alt="MQTT Explorer Subscription">
+                <p>
+                    Subscribe and publish messages to "esp32/test/cpre888" using MQTT Explorer. You can easily visualize the messages being sent and received.
+                </p>
+                <img src="./public/pub_mqtt_explorer.png" alt="MQTT Explorer Publishing">
+                <img src="./public/mqtt_explorer_output.png" alt="MQTT Explorer Output">
+                <p>
+                    The messages are successfully published and received using MQTT Explorer!
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
